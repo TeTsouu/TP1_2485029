@@ -91,9 +91,7 @@ fun LanceurDeDesApp() {
     }
 }
 
-/* ==========================================================
-   REMISE 1 — Interface statique (sans logique)
-   ========================================================== */
+
 @Composable
 fun Remise1_UIStatique(modifier: Modifier = Modifier) {
     Column(
@@ -101,9 +99,9 @@ fun Remise1_UIStatique(modifier: Modifier = Modifier) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
-        Text("Remise 1 — Interface statique", fontSize = 22.sp, fontWeight = FontWeight.Bold)
 
-        // Section : paramètres
+
+
         Card(Modifier.fillMaxWidth(), elevation = CardDefaults.cardElevation(6.dp)) {
             Column(Modifier.padding(12.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
                 Text("Paramètres", fontWeight = FontWeight.Medium)
@@ -147,7 +145,7 @@ fun Remise1_UIStatique(modifier: Modifier = Modifier) {
             }
         }
 
-        // Section : résultats fictifs
+
         Card(Modifier.fillMaxWidth(), elevation = CardDefaults.cardElevation(6.dp)) {
             Column(Modifier.padding(12.dp)) {
                 Text("Résultats (exemple statique)", fontWeight = FontWeight.Medium)
@@ -162,9 +160,7 @@ fun Remise1_UIStatique(modifier: Modifier = Modifier) {
     }
 }
 
-/* ==========================================================
-   REMISE 2 — Version fonctionnelle (sans images)
-   ========================================================== */
+
 @Composable
 fun Remise2_Fonctionnelle(modifier: Modifier = Modifier) {
     var nbDesTexte by rememberSaveable { mutableStateOf("2") }
@@ -172,30 +168,28 @@ fun Remise2_Fonctionnelle(modifier: Modifier = Modifier) {
     var tri by rememberSaveable { mutableStateOf("Aucun") }
     var resultats by rememberSaveable { mutableStateOf(listOf<Int>()) }
 
-    // validations/parsings sûrs
+
     val nbDes = nbDesTexte.toIntOrNull()?.coerceAtLeast(1) ?: 1
     val nbFaces = nbFacesTexte.toIntOrNull()?.coerceAtLeast(4) ?: 6
 
     val orientation = LocalConfiguration.current.orientation
 
-    // fonction lancer robuste : calcule d'abord les nouvelles valeurs, met à jour resultats,
-    // calcule la somme locale pour le log (évite d'utiliser "somme" calculé AVANT mise à jour)
+
     val lancer: () -> Unit = {
-        // Génération
+
         val generes = List(nbDes) { Random.nextInt(1, nbFaces + 1) }
-        // Application du tri demandé
         val finalList = when (tri) {
             "Croissant" -> generes.sorted()
             "Décroissant" -> generes.sortedDescending()
             else -> generes
         }
-        // Mise à jour de l'état (déclenche recomposition)
+
         resultats = finalList
 
-        // Calculer la somme locale pour logging (et précision immédiate)
+
         val sommeLocale = finalList.sum()
 
-        // Logs clairs
+
         Log.d(TAG, "[Remise2] Lancer -> nbDes=$nbDes, nbFaces=$nbFaces, tri=$tri")
         Log.d(TAG, "[Remise2] Généré (avant tri) = $generes")
         Log.d(TAG, "[Remise2] Après tri = $finalList, somme = $sommeLocale")
@@ -203,7 +197,7 @@ fun Remise2_Fonctionnelle(modifier: Modifier = Modifier) {
 
     val somme = resultats.sum()
 
-    // Layout (identique au précédent, mais bouton désactivé si entrée invalide)
+
     if (orientation == Configuration.ORIENTATION_PORTRAIT) {
         Column(
             modifier = modifier,
